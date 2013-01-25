@@ -16,6 +16,8 @@ First edit the Makefile and ensure that the paths to the Mathematica and MATLAB 
     make
     cp mEngine ..
 
-Edit mEngine.sh and ensure that the path to your MATLAB installation is correct.
+Edit `mEngine.sh` and ensure that the path to your MATLAB installation is correct.
 
-Test mEngine using the examples from mEngine.nb
+Test mEngine using the examples from `mEngine.nb`.
+
+A precompiled binary for 64 bit OS X 10.6 or later is available [here](https://dl.dropbox.com/u/38623/mEngineBinary.zip).
