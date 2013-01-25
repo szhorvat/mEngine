@@ -16,6 +16,13 @@
 
 Engine* Eng = NULL;
 
+
+#if WINDOWS_MATHLINK
+
+#if __BORLANDC__
+#pragma argsused
+#endif
+
 int PASCAL WinMain( HINSTANCE hinstCurrent, HINSTANCE hinstPrevious, LPSTR lpszCmdLine, int nCmdShow)
 {
 	char buff[512];
@@ -40,3 +47,22 @@ int PASCAL WinMain( HINSTANCE hinstCurrent, HINSTANCE hinstPrevious, LPSTR lpszC
 	return ml_main;
 
 }
+
+#else
+
+int main(int argc, char* argv[])
+{
+	int result;
+
+	result = MLMain(argc, argv);
+
+	if(NULL != Eng)
+	{
+		engClose(Eng);
+		Eng = NULL;
+	}
+
+	return result;
+}
+
+#endif
