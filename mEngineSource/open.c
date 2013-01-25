@@ -23,11 +23,7 @@ void engopen(void)
 	if (NULL == Eng)	//if not opened yet, open it
 	{
 		msg("eng::stMLB");	//message starting MATLAB
-#if WINDOWS_MATHLINK
-        if (!(Eng = engOpen(NULL)))	//start failure
-#else
-        if (!(Eng = engOpen("matlab")))	//start failure
-#endif
+		if (!(Eng = engOpen("matlab")))	//start failure
 		{
 			msg("eng::erMLB");
 			SUCCESS = false;

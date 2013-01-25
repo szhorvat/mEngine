@@ -13,19 +13,21 @@
 #include "mathlink.h"
 #include "engine.h"
 
+#include <stdio.h>
+
 extern Engine* Eng;
 extern void msg(const char* m);
 
 void engget(const char* VarName)
 {
-	mxArray*	MxVar = NULL;	//pointer for the variable to get
-	const int*	dimlab = NULL;	//MATLAB dimension
-	int*		dimma = NULL;	//Mathematica dimension
-	int			Depth = 0;		//depth
-	double*		Pr = NULL;		//pointer to real
-	double*		Pi = NULL;		//pointer to imaginary
-	bool		SUCCESS = true;	//status flag
-	int			i;				//for loop
+	mxArray*		MxVar = NULL;	//pointer for the variable to get
+	const mwSize*	dimlab = NULL;	//MATLAB dimension
+	int*			dimma = NULL;	//Mathematica dimension
+	int				Depth = 0;		//depth
+	double*			Pr = NULL;		//pointer to real
+	double*			Pi = NULL;		//pointer to imaginary
+	bool			SUCCESS = true;	//status flag
+	int				i;				//for loop
 
 	if (NULL == Eng)	//if MATLAB not opened
 	{
@@ -53,7 +55,7 @@ void engget(const char* VarName)
 	dimlab = mxGetDimensions(MxVar);
 
 	//translate dimension information to Mathematica
-	dimma = mxCalloc(Depth, sizeof(int));
+	dimma = malloc(Depth * sizeof(int));
 	for(i=0; i<Depth; ++i)
 		dimma[i] = dimlab[Depth - 1 - i];
 	//data pointer
@@ -68,13 +70,18 @@ epilog:
 		{
 			//output re+im*I
 			MLPutFunction(stdlink, "Plus", 2);
-			MLPutRealArray(stdlink, Pr, dimma, NULL, Depth);
+			MLPutReal64Array(stdlink, Pr, dimma, NULL, Depth);
 			MLPutFunction(stdlink, "Times", 2);
-			MLPutRealArray(stdlink, Pi, dimma, NULL, Depth);
+			MLPutReal64Array(stdlink, Pi, dimma, NULL, Depth);
 			MLPutSymbol(stdlink, "I");
 		}
-		else
-			MLPutRealArray(stdlink, Pr, dimma, NULL, Depth);
+		else {
+			/*
+			FILE *f = fopen("log.txt", "a");
+			fprintf("%d\n", Depth);
+			fclose(f); */
+			MLPutReal64Array(stdlink, Pr, dimma, NULL, Depth);
+		}
 		//clean
 		mxDestroyArray(MxVar);
 		mxFree(dimma);
@@ -84,7 +91,7 @@ epilog:
 		if(NULL != MxVar)
 			mxDestroyArray(MxVar);		
 		if(NULL != dimma)
-			mxFree(dimma);
+			free(dimma);
 		MLPutSymbol(stdlink, "$Failed");
 	}
 }
