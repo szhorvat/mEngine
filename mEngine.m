@@ -1,3 +1,5 @@
+(* ::Package:: *)
+
 (* 
  *
  * MATLAB Engine Interface to Mathematica 
@@ -41,7 +43,7 @@ mGet::arg=
 	or a list of such strings."
 
 (* This imports all the eng functions *)
-eng = Install["mEngine.exe"] 
+eng = Install["mEngine.sh"] 
 
 Begin["`Private`"]
 
