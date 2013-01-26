@@ -28,7 +28,7 @@ void engget(const char* VarName)
 	double*			Pi = NULL;		//pointer to imaginary
 	bool			SUCCESS = true;	//status flag
 	int				i;				//for loop
-
+    
 	if (NULL == Eng)	//if MATLAB not opened
 	{
 		msg("eng::noMLB");	//message no start
@@ -43,7 +43,7 @@ void engget(const char* VarName)
 		goto epilog;
 	}
 
-	if(!mxIsNumeric(MxVar))
+	if(!mxIsDouble(MxVar))
 	{
 		msg("engGet::ertp");
 		SUCCESS = false;
@@ -76,15 +76,11 @@ epilog:
 			MLPutSymbol(stdlink, "I");
 		}
 		else {
-			/*
-			FILE *f = fopen("log.txt", "a");
-			fprintf("%d\n", Depth);
-			fclose(f); */
 			MLPutReal64Array(stdlink, Pr, dimma, NULL, Depth);
 		}
 		//clean
 		mxDestroyArray(MxVar);
-		mxFree(dimma);
+		free(dimma);
 	}
 	else
 	{
