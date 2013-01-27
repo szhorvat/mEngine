@@ -34,25 +34,20 @@
 
 :Evaluate:
 	engOpen::usage = 
-	"engOpen[] opens the MATLAB engine. It is a wrapper 
-	to the MATLAB Engine Interface engOpen."
+	"engOpen[] opens the MATLAB engine. It is a wrapper to the MATLAB Engine Interface engOpen."
 
 :Evaluate:
 	engClose::usage = 
-	"engClose[] closes the MATLAB engine. It is a wrapper 
-	to the MATLAB Engine Interface engClose."
+	"engClose[] closes the MATLAB engine. It is a wrapper to the MATLAB Engine Interface engClose."
 
 :Evaluate:
 	engIsOpen::usage = 
-	"engIsOpen[] gives True if the MATLAB Engine is opened,
-	and False otherwise."
+	"engIsOpen[] gives True if the MATLAB Engine is opened, and False otherwise."
 
 
 :Evaluate:
 	engVis::usage = 
-	"engVis[1] and engVis[0] shows or hides the MATLAB 
-	command window respectively. It is a wrapper to the MATLAB 
-	Engine Interface engSetVisible."
+	"engVis[1] and engVis[0] shows or hides the MATLAB command window respectively. It is a wrapper to the MATLAB Engine Interface engSetVisible."
 
 :Evaluate:
 	engVis::erchg = 
@@ -60,8 +55,7 @@
 
 :Evaluate:
 	engCmd::usage = 
-	"engCmd[\"command\"] sends \"command\" to MATLAB. It 
-	is a wrapper to the the MATLAB Engine Interface engEvalString."
+	"engCmd[\"command\"] sends \"command\" to MATLAB. It is a wrapper to the the MATLAB Engine Interface engEvalString."
 
 :Evaluate:
 	engCmd::erexe = 
@@ -69,13 +63,7 @@
 
 :Evaluate:
 	engPut::usage = 
-	"engPut[\"x\", dim, val] puts real list val, with 
-	MATLAB dimension dim, into the MATLAB workspace, and 
-	name it x. engPut[\"x\", dim, re, im] puts complex 
-	list whose real andimaginary parts are stored in re 
-	and im, with MATLAB dimension dim, into the MATLAB 
-	workspace, and name it x. It is a wrapper to the 
-	MATLAB Engine Interface engPutVariable."
+	"engPut[\"x\", dim, val] puts real list val, with MATLAB dimension dim, into the MATLAB workspace, and name it x. engPut[\"x\", dim, re, im] puts complex list whose real andimaginary parts are stored in re and im, with MATLAB dimension dim, into the MATLAB workspace, and name it x. It is a wrapper to the MATLAB Engine Interface engPutVariable."
 
 :Evaluate:
 	engPut::ercrt =	
@@ -87,18 +75,15 @@
 
 :Evaluate:
 	engGet::usage = 
-	"engGet[\"x\"] returns the variable x in the MATLAB 
-	workspace. It is a wrapper to the the MATLAB Engine 
-	Interface engGetVariable."
+	"engGet[\"x\"] returns the variable x in the MATLAB workspace. It is a wrapper to the the MATLAB Engine Interface engGetVariable."
 
 :Evaluate:
 	engGet::erget =	
-	"Error getting array from the MATLAB workspace. 
-	Array may not exist."
+	"Error getting array from the MATLAB workspace. Array may not exist."
 
 :Evaluate:
 	engGet::ertp = 
-	"Cannot get MATLAB array other than numeric."
+	"Cannot get MATLAB array other than double precision numeric."
 
 :Evaluate:
 	EndPackage[]
@@ -148,7 +133,7 @@
 :Pattern:		engCmd[cmd_String]
 
 :Arguments:		{cmd}
-:ArgumentTypes:	{String}
+:ArgumentTypes:	{UTF8String}
 :ReturnType:	Manual
 :End:
 :Evaluate:

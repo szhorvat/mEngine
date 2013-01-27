@@ -30,6 +30,8 @@ void engopen(void)
 		}
 		else
 			engSetVisible(Eng, false);	//default hide
+
+		engEvalString(Eng, "feature('DefaultCharacterSet', 'UTF-8')");
 	}
 	else
 	{

@@ -21,3 +21,5 @@ Edit `mEngine.sh` and ensure that the path to your MATLAB installation is correc
 Test mEngine using the examples from `mEngine.nb`.
 
 A precompiled binary for 64 bit OS X 10.6 or later is available [here](https://dl.dropbox.com/u/38623/mEngineBinary.zip).
+
+**Important:** Do not forget to edit mEngine.sh and set the correct path to your MATLAB installation so mEngine can find the matlab executable!

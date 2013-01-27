@@ -10,20 +10,26 @@
  *	
  */
 
+#include <string.h>
+
 #include "mathlink.h"
 #include "engine.h"
 
-#include <string.h>
-
-#define  BUFSIZE (20*1024)	//20k for output buffer
+#define  BUFSIZE (100*1024)	// 100k for output buffer
 
 extern Engine* Eng;
 extern void msg(const char* m);
 
-void engcmd(const char* command)
+void engcmd(const char* command, int bytes, int characters)
 {
-	char buffer[BUFSIZE];	//MatLab output buffer
-	bool SUCCESS = true;		//success flag
+	char buffer[BUFSIZE+1];		// MATLAB output buffer
+	char szcommand[bytes+1];	// null-terminated version of 'command'
+	bool SUCCESS = true;		// success flag
+
+    buffer[BUFSIZE] = '\0';	// ensure buffer is null-terminated even when full
+
+    memcpy(szcommand, command, bytes);
+    szcommand[bytes] = '\0';
 
 	if (NULL == Eng)	//if not opened yet
 	{
@@ -34,7 +40,7 @@ void engcmd(const char* command)
 	{
 		engOutputBuffer(Eng, buffer, BUFSIZE);	//for return output
 		//issue command
-		if(engEvalString(Eng, command))	//if unsucessful
+		if(engEvalString(Eng, szcommand))	//if unsucessful
 		{
 			msg("engCmd::erexe");
 			SUCCESS = false;
@@ -42,7 +48,7 @@ void engcmd(const char* command)
 	}
 
 	if(SUCCESS)
-		MLPutByteString(stdlink, buffer, strlen(buffer));
+		MLPutUTF8String(stdlink, (unsigned char *) buffer, strlen(buffer));
 	else
 		MLPutSymbol(stdlink, "$Failed");
 
