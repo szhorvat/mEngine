@@ -10,10 +10,10 @@
  *	
  */
 
+#include <stdlib.h>		// for malloc() & free()
+
 #include "mathlink.h"
 #include "engine.h"
-
-#include <stdio.h>
 
 extern Engine* Eng;
 extern void msg(const char* m);

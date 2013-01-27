@@ -28,6 +28,7 @@ void engcmd(const char* command, int bytes, int characters)
 
     buffer[BUFSIZE] = '\0';	// ensure buffer is null-terminated even when full
 
+    // make null-terminated version of 'command':
     memcpy(szcommand, command, bytes);
     szcommand[bytes] = '\0';
 

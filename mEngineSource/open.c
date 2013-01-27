@@ -18,7 +18,7 @@ extern void msg(const char* m);
 
 void engopen(void)
 {
-	bool SUCCESS = true;		//success flag
+	bool SUCCESS = true;	//success flag
 
 	if (NULL == Eng)	//if not opened yet, open it
 	{
@@ -31,6 +31,8 @@ void engopen(void)
 		else
 			engSetVisible(Eng, false);	//default hide
 
+		// Mma will interpret MATLAB's output as UTF-8, so let's make
+		// sure that's what MATLAB is sending
 		engEvalString(Eng, "feature('DefaultCharacterSet', 'UTF-8')");
 	}
 	else

@@ -1,4 +1,5 @@
 
+# Set path to MATLAB and MathLink here:
 MATLABDIR   = /Applications/MATLAB_R2012b.app
 MATHLINKDIR = /Applications/Mathematica\ 9.app/SystemFiles/Links/MathLink/DeveloperKit
 
