@@ -10,15 +10,12 @@
  *	
  */
 
-#include <string.h>
+#include "mengine.h"
 
-#include "mathlink.h"
-#include "engine.h"
+#include <string.h>
 
 #define  BUFSIZE (100*1024)	// 100k for output buffer
 
-extern Engine* Eng;
-extern void msg(const char* m);
 
 void engcmd(const char* command, int bytes, int characters)
 {

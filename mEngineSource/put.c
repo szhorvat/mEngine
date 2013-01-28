@@ -10,13 +10,10 @@
  *	
  */
 
-#include "mathlink.h"
-#include "engine.h"
+#include "mengine.h"
 
 #include <string.h>
 
-extern Engine* Eng;
-extern void msg(const char* m);
 
 // put a real array to the MatLab workspace
 void engputr(const char* VarName,

@@ -9,10 +9,8 @@
  *	
  */
 
-#include "mathlink.h"
-#include "engine.h"
+#include "mengine.h"
 
-extern Engine* Eng;
 
 void engisopen(void)
 {

@@ -47,7 +47,7 @@
 
 :Evaluate:
 	engVis::usage = 
-	"engVis[1] and engVis[0] shows or hides the MATLAB command window respectively. It is a wrapper to the MATLAB Engine Interface engSetVisible."
+	"engVis[1] and engVis[0] shows or hides the MATLAB command window, respectively. It is a wrapper to the MATLAB Engine Interface engSetVisible."
 
 :Evaluate:
 	engVis::erchg = 

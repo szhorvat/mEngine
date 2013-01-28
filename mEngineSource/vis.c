@@ -10,12 +10,8 @@
  *	
  */
 
+#include "mengine.h"
 
-#include "mathlink.h"
-#include "engine.h"
-
-extern Engine* Eng;
-extern void msg(const char* m);
 
 void engvis(int v)
 {

@@ -10,24 +10,77 @@
  *	
  */
 
+#include "mengine.h"
+
 #include <stdlib.h>		// for malloc() & free()
+#include <string.h>
 
-#include "mathlink.h"
-#include "engine.h"
 
-extern Engine* Eng;
-extern void msg(const char* m);
+// Takes a MATLAB variable and writes in in Mathematica form to link
+// To be used with loopback links
+// Returns 0 on success
+// Returns 1 on failure and may leave the link with a half-built expression
+int toMma(const mxArray *matlabVar, MLINK link) {
+	int err = 0; // default success
+
+	mwSize        depth;
+	const mwSize *matlabDims;
+	int          *mmaDims;
+
+	int i;
+
+	//retrive size information
+	depth = mxGetNumberOfDimensions(matlabVar);
+	matlabDims = mxGetDimensions(matlabVar);
+
+	//translate dimension information to Mathematica
+	mmaDims = malloc(depth * sizeof(int));
+	for(i = 0; i < depth; ++i)
+		mmaDims[i] = matlabDims[depth - 1 - i];
+
+
+	if (mxIsDouble(matlabVar)) {
+		double *Pr = NULL;	//pointer to real
+		double *Pi = NULL;	//pointer to imaginary
+
+		//data pointer
+		Pr = mxGetPr(matlabVar);
+		Pi = mxGetPi(matlabVar);
+
+		if (mxIsComplex(matlabVar)) {
+			//output re+im*I
+			MLPutFunction(link, "Plus", 2);
+			MLPutReal64Array(link, Pr, mmaDims, NULL, depth);
+			MLPutFunction(link, "Times", 2);
+			MLPutReal64Array(link, Pi, mmaDims, NULL, depth);
+			MLPutSymbol(link, "I");
+		}
+		else {
+			MLPutReal64Array(link, Pr, mmaDims, NULL, depth);
+		}
+	}
+	else if (mxIsChar(matlabVar)) {
+		char *str;
+
+		str = mxArrayToString(matlabVar);
+		MLPutUTF8String(link, (unsigned char *) str, strlen(str));
+		mxFree(str);
+	}
+	else
+	{
+		err = 1; // failure
+	}
+
+	free(mmaDims);
+
+	return err; // failure
+}
+
 
 void engget(const char* VarName)
 {
-	mxArray*		MxVar = NULL;	//pointer for the variable to get
-	const mwSize*	dimlab = NULL;	//MATLAB dimension
-	int*			dimma = NULL;	//Mathematica dimension
-	int				Depth = 0;		//depth
-	double*			Pr = NULL;		//pointer to real
-	double*			Pi = NULL;		//pointer to imaginary
-	bool			SUCCESS = true;	//status flag
-	int				i;				//for loop
+	mxArray *MxVar;				// MATLAB variable
+	bool     SUCCESS = true;	// status flag
     
 	if (NULL == Eng)	//if MATLAB not opened
 	{
@@ -43,52 +96,17 @@ void engget(const char* VarName)
 		goto epilog;
 	}
 
-	if(!mxIsDouble(MxVar))
-	{
+	if ( toMma(MxVar, stdlink) ) { // failure
 		msg("engGet::ertp");
 		SUCCESS = false;
 		goto epilog;
 	}
 
-	//retrive size information
-	Depth = mxGetNumberOfDimensions(MxVar);
-	dimlab = mxGetDimensions(MxVar);
-
-	//translate dimension information to Mathematica
-	dimma = malloc(Depth * sizeof(int));
-	for(i=0; i<Depth; ++i)
-		dimma[i] = dimlab[Depth - 1 - i];
-	//data pointer
-	Pr = (double*)mxGetPr(MxVar);
-	Pi = (double*)mxGetPi(MxVar);
-
 epilog:
-	if(SUCCESS)
-	{
-
-		if(mxIsComplex(MxVar))
-		{
-			//output re+im*I
-			MLPutFunction(stdlink, "Plus", 2);
-			MLPutReal64Array(stdlink, Pr, dimma, NULL, Depth);
-			MLPutFunction(stdlink, "Times", 2);
-			MLPutReal64Array(stdlink, Pi, dimma, NULL, Depth);
-			MLPutSymbol(stdlink, "I");
-		}
-		else {
-			MLPutReal64Array(stdlink, Pr, dimma, NULL, Depth);
-		}
-		//clean
-		mxDestroyArray(MxVar);
-		free(dimma);
-	}
-	else
-	{
-		if(NULL != MxVar)
-			mxDestroyArray(MxVar);		
-		if(NULL != dimma)
-			free(dimma);
+	// cleanup
+	if(NULL != MxVar)
+		mxDestroyArray(MxVar);		
+	if (! SUCCESS)
 		MLPutSymbol(stdlink, "$Failed");
-	}
 }
 
