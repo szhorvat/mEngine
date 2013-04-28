@@ -1,3 +1,9 @@
+
+**Note:** I do not use this any more.  Consider using [MATLink](https://github.com/rsmenon/MATLink/) instead.
+
+
+----
+
 mEngine
 =======
 
